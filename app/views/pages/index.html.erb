@@ -1,0 +1,30 @@
+<% if current_user %>
+
+<p>Please select a Facebook friend to get started.</p>
+
+<script>
+  $.get('sessions/fb_friends.json', function(data) {
+    $("#fb_friend_select").autocomplete({
+      minLength: 0,
+      source: data.friends,
+      focus: function(event, ui) {
+        $("#fb_friend_select").val( ui.item[0] );
+        return false;
+      },
+      select: function( event, ui ) {
+        $("#fb_friend_select").val( ui.item[0] );
+        alert("You selected user #"+ui.item[1])
+        return false;
+      }
+    }).data( "autocomplete" )._renderItem = function( ul, item ) {
+      return $("<li></li>")
+      .data( "item.autocomplete", item )
+      .append( "<a>"+item[0]+"</a>" )
+      .appendTo(ul);
+    };
+  })
+</script>
+
+<input id="fb_friend_select"/>
+
+<% end %>
